@@ -1,11 +1,7 @@
-const {
-  time,
-  loadFixture,
-} = require("@nomicfoundation/hardhat-network-helpers");
-const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
+const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { expect } = require("chai");
 
-describe("Lock", function () {
+describe("TrustSigil", function () {
   const trustSigilBaseUri = "www.trustsigil.com/";
 
   let trustSigil;
