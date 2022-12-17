@@ -22,13 +22,19 @@ describe("OrbisBridge", function () {
     const data = "hello";
     const inBytes = utils.formatBytes32String(data);
 
-    it("sets trust attestor for tokenId", async function () {
-      const signedMssage = await owner.signMessage(inBytes);
+    it("returns true", async function () {
+      // STEP 1:
+      // building hash has to come from system address
+      // 32 bytes of data
+      let messageHash = utils.solidityKeccak256(["address"], [owner.address]);
 
-      console.log(
-        await orbisBridge.verify(inBytes, signedMssage, owner.address)
-      );
-      //   expect(await trustSigil.trustAttestors(tokenId)).to.equal(addressOne);
+      // STEP 2: 32 bytes of data in Uint8Array
+      let messageHashBinary = utils.arrayify(messageHash);
+
+      // STEP 3: To sign the 32 bytes of data, make sure you pass in the data
+      let signature = await owner.signMessage(messageHashBinary);
+
+      expect(await orbisBridge.verify(signature, owner.address)).to.equal(true);
     });
   });
 });

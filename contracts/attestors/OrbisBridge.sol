@@ -13,8 +13,11 @@ contract OrbisBridge is ITrustAttestor{
         return true;
     }
 
-    function verify(bytes32 data, bytes memory signature, address account) public pure returns (bool) {
-        return data
+    function verify(bytes memory signature, address account) public view returns (bool) {
+
+        bytes32 msgHash = keccak256(abi.encodePacked(msg.sender));
+
+        return msgHash
             .toEthSignedMessageHash()
             .recover(signature) == account;
     }
