@@ -9,23 +9,24 @@ import "../interfaces/ITrustAttestor.sol";
 contract OrbisBridge is ITrustAttestor{
     using ECDSA for bytes32;
 
+    // data params specific to this attestator implementation
+    struct DataParams {
+        address sender;
+        address recipient;
+    }
+
+    // address of pkp that is used by lit action
+    address public litActionPkp;
+
+    constructor(address _litActionPkp) {
+        litActionPkp = _litActionPkp;
+    }
 
     /// See {ITrustAttestor-attest}.
-    // TODO: implement
-    function attest(address recipient, uint256 tokenId, bytes memory data) external pure returns(bool) {
-        return true;
-    }
-
-
-    // this implementation is just to exemplify how a simple signature verification function can look like
-    // TODO: remove if attest function has been implemented 
-    function verify(bytes memory signature, address account) public view returns (bool) {
-
-        bytes32 msgHash = keccak256(abi.encodePacked(msg.sender));
-
+    function attestMint(address sender, address recipient, bytes memory data) external view returns(bool) {
+        bytes32 msgHash = keccak256(abi.encodePacked(sender, recipient));
         return msgHash
             .toEthSignedMessageHash()
-            .recover(signature) == account;
+            .recover(data) == litActionPkp;
     }
 }
-

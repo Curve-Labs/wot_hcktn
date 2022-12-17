@@ -37,7 +37,7 @@ contract TrustSigil is BadgerCore {
         require(
             address(
                 trustAttestors[tokenId]) == ADDRESS_ONE
-                || trustAttestors[tokenId].attest(recipient, tokenId, data
+                || trustAttestors[tokenId].attestMint(msg.sender, recipient, data
             ),
             "No trust attestation"
         );

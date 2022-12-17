@@ -9,7 +9,7 @@ describe("OrbisBridge", function () {
     const [owner, otherAccount] = await ethers.getSigners();
 
     const OrbisBridge = await ethers.getContractFactory("OrbisBridge");
-    const orbisBridge = await OrbisBridge.deploy();
+    const orbisBridge = await OrbisBridge.deploy(owner.address);
 
     return { orbisBridge, owner, otherAccount };
   }
@@ -18,7 +18,7 @@ describe("OrbisBridge", function () {
     ({ owner, otherAccount, orbisBridge } = await loadFixture(deployFixture));
   });
 
-  describe("#verify", function () {
+  describe("#attestMint", function () {
     const data = "hello";
     const inBytes = utils.formatBytes32String(data);
 
@@ -26,7 +26,10 @@ describe("OrbisBridge", function () {
       // STEP 1:
       // building hash has to come from system address
       // 32 bytes of data
-      let messageHash = utils.solidityKeccak256(["address"], [owner.address]);
+      let messageHash = utils.solidityKeccak256(
+        ["address", "address"],
+        [owner.address, otherAccount.address]
+      );
 
       // STEP 2: 32 bytes of data in Uint8Array
       let messageHashBinary = utils.arrayify(messageHash);
@@ -34,7 +37,13 @@ describe("OrbisBridge", function () {
       // STEP 3: To sign the 32 bytes of data, make sure you pass in the data
       let signature = await owner.signMessage(messageHashBinary);
 
-      expect(await orbisBridge.verify(signature, owner.address)).to.equal(true);
+      expect(
+        await orbisBridge.attestMint(
+          owner.address,
+          otherAccount.address,
+          signature
+        )
+      ).to.equal(true);
     });
   });
 });
