@@ -46,8 +46,6 @@ contract BadgerCore is ERC1155Supply, Ownable {
     /*
         Constructor
     */
-    /// @notice deploys fresh Sephamore instance 
-    /// and sets address of shadowBadger
     constructor(string memory _baseUri) ERC1155(_baseUri) {}
 
     /*
