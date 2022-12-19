@@ -31,5 +31,6 @@ npx hardhat run scripts/deploy.js
 ### Testing locally
 
 - install dependencies: `npm i`
-- deploy TrustSigil contract: `npx hardhat --network localhost deploy:sigil --base <baseUri>` (baseUri can be anything, it is used to point to the metadata per tokenId)
+- have a local node running in a separate terminal window: `npx hardhat node`
+- deploy TrustSigil contract: `npx hardhat --network localhost deploy:sigil --base <baseUri>` (baseUri can be any string, it is just used to point to the metadata per tokenId)
 - setup a sigil with attestor contract `npx hardhat --network localhost setup:sigil --id <tokenId> --attestor <attestorAddress>` or without attestor by omitting the param `npx hardhat --network localhost setup:sigil --id <tokenId>`
