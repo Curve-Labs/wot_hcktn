@@ -37,6 +37,11 @@ describe("TrustSigil", function () {
     context("with addressOne set as attestor", () => {
       const addressOne = "0x1111111111111111111111111111111111111111";
 
+      const lastBlockNumber = async () => {
+        const lastBlock = await ethers.provider.getBlock("latest");
+        return lastBlock.number;
+      };
+
       beforeEach("setup sigil", async () => {
         await trustSigil.setupSigil(tokenId, addressOne);
       });
@@ -47,6 +52,31 @@ describe("TrustSigil", function () {
         expect(
           await trustSigil.balanceOf(otherAccount.address, tokenId)
         ).to.equal(1);
+      });
+
+      it("emits event SigilMinted", async function () {
+        await expect(
+          trustSigil.mintSigil(otherAccount.address, tokenId, emptyData)
+        )
+          .to.emit(trustSigil, "SigilMinted")
+          .withArgs(
+            owner.address,
+            otherAccount.address,
+            tokenId,
+            await lastBlockNumber()
+          );
+      });
+
+      it("stores relationship metadata", async function () {
+        await trustSigil.mintSigil(otherAccount.address, tokenId, emptyData);
+
+        expect(
+          await trustSigil.getSigil(
+            tokenId,
+            otherAccount.address,
+            owner.address
+          )
+        ).to.equal(await lastBlockNumber());
       });
     });
   });
