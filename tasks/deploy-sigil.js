@@ -3,5 +3,9 @@ task("deploy:sigil", "Deploys an instance of TrustSigil")
   .setAction(async ({ base }, { ethers, deployments }) => {
     const [owner] = await ethers.getSigners();
     const { deploy } = deployments;
-    await deploy("TrustSigil", { args: [base], from: owner.address });
+    const { address } = await deploy("TrustSigil", {
+      args: [base],
+      from: owner.address,
+    });
+    return address;
   });

@@ -1,6 +1,9 @@
-task("setup:sigil", "Deploys an instance of TrustSigil")
+task("setup:sigil", "Sets up a new sigil")
   .addParam("id", "The base uri to be used for token metadata")
-  .addOptionalParam("attestor", "The address of the attestor contract")
+  .addOptionalParam(
+    "attestor",
+    "The address of the attestor contract (optional)"
+  )
   .setAction(async ({ attestor, id }, { deployments, ethers }) => {
     const ADDRESS_ONE = "0x1111111111111111111111111111111111111111";
 
@@ -15,6 +18,4 @@ task("setup:sigil", "Deploys an instance of TrustSigil")
     attestor
       ? (tx = await trustSigil.setupSigil(id, attestor))
       : (tx = await trustSigil.setupSigil(id, ADDRESS_ONE));
-
-    console.log("tx: ", tx);
   });
