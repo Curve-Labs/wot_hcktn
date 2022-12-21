@@ -1,7 +1,7 @@
 task(
   "setup:testing",
   "Deploys up a TrustSigil and sets up new sigil (tokenId = 1) with OrbisBridge as attestor"
-).setAction(async ({ attestor, id }, { deployments, ethers, run }) => {
+).setAction(async (_, { run }) => {
   const baseUri = "ipfs://";
   const pkpAddress = "0xC5c8D3533cD0eB838c60AEeea5dF6fE23E34b67C";
   const tokenId = "1";
