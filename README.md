@@ -27,9 +27,10 @@ npx hardhat node
   - in the context of the hackathon, the TrustAttestor would be a contract that checks if there is a follower-relationship between user A and user B
   - if no TrustAttestor should be used for the tokenId, the user setting up the sigil needs to pass `0x1111111111111111111111111111111111111111` as address
 
-### Testing locally
+# Testing locally
 
 - install dependencies: `npm i`
 - have a local node running in a separate terminal window: `npx hardhat node`
-- deploy TrustSigil contract: `npx hardhat --network localhost deploy:sigil --base <baseUri>` (baseUri can be any string, it is just used to point to the metadata per tokenId)
-- setup a sigil with attestor contract `npx hardhat --network localhost setup:sigil --id <tokenId> --attestor <attestorAddress>` or without attestor by omitting the param `npx hardhat --network localhost setup:sigil --id <tokenId>`
+- run `npx hardhat --network localhost setup:testing`
+  - this will deploy a TrustSigil contract and an OrbisBridge contract tied to the pkp `0xC5c8D3533cD0eB838c60AEeea5dF6fE23E34b67C`
+  - it will also invoke `setupSigil` with tokenId = 1 and the address of the OrbisBridge as trustAttestor
