@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "../interfaces/ITrustAttestor.sol";
+import "hardhat/console.sol";
 
 
 contract OrbisBridge is ITrustAttestor{
@@ -25,6 +26,10 @@ contract OrbisBridge is ITrustAttestor{
     /// See {ITrustAttestor-attest}.
     function attestMint(address sender, address recipient, bytes memory data) external view returns(bool) {
         bytes32 msgHash = keccak256(abi.encodePacked(sender, recipient));
+        console.log("kua");
+        console.log(msgHash
+            .toEthSignedMessageHash()
+            .recover(data));
         return msgHash
             .toEthSignedMessageHash()
             .recover(data) == litActionPkp;
