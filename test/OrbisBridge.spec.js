@@ -1,5 +1,6 @@
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { expect } = require("chai");
+const { ethers, config } = require("hardhat");
 const utils = ethers.utils;
 
 describe("OrbisBridge", function () {
@@ -19,9 +20,6 @@ describe("OrbisBridge", function () {
   });
 
   describe("#attestMint", function () {
-    const data = "hello";
-    const inBytes = utils.formatBytes32String(data);
-
     it("returns true", async function () {
       // STEP 1:
       // building hash has to come from system address
@@ -34,8 +32,16 @@ describe("OrbisBridge", function () {
       // STEP 2: 32 bytes of data in Uint8Array
       let messageHashBinary = utils.arrayify(messageHash);
 
-      // STEP 3: To sign the 32 bytes of data, make sure you pass in the data
-      let signature = await owner.signMessage(messageHashBinary);
+      // STEP 3: get signature (= test specific, not suitable for prod)
+      const { accounts } = config.networks.hardhat;
+      const wallet1 = ethers.Wallet.fromMnemonic(
+        accounts.mnemonic,
+        accounts.path + `/0`
+      );
+      const privateKey1 = wallet1.privateKey;
+      const signingKey = new ethers.utils.SigningKey(privateKey1);
+      const expandedSig = signingKey.signDigest(messageHashBinary);
+      const signature = ethers.utils.joinSignature(expandedSig);
 
       expect(
         await orbisBridge.attestMint(

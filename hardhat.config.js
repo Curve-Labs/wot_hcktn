@@ -5,6 +5,7 @@ require("./tasks/deploy-sigil");
 require("./tasks/setup-sigil");
 require("./tasks/deploy-orbis-bridge");
 require("./tasks/setup-testing");
+require("./tasks/verify-pkp-sig");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {

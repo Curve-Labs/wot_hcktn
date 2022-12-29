@@ -25,8 +25,6 @@ contract OrbisBridge is ITrustAttestor{
     /// See {ITrustAttestor-attest}.
     function attestMint(address sender, address recipient, bytes memory data) external view returns(bool) {
         bytes32 msgHash = keccak256(abi.encodePacked(sender, recipient));
-        return msgHash
-            .toEthSignedMessageHash()
-            .recover(data) == litActionPkp;
+        return msgHash.recover(data) == litActionPkp;
     }
 }
