@@ -2,7 +2,7 @@ const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { expect } = require("chai");
 const { ethers, run } = require("hardhat");
 
-describe.only("Lit", function () {
+describe.skip("Lit", function () {
   let orbisBridge;
 
   const pkpAddress = "0xC5c8D3533cD0eB838c60AEeea5dF6fE23E34b67C";
